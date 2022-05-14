@@ -1,3 +1,7 @@
+#################################################################################
+#######  Loading the movie data and creating a movie/actors dictionary   ########
+#################################################################################
+
 # creating an empty dictionary with movies as key and a list of all participating 
 # as respective values
 movies_dict = {}
@@ -20,3 +24,90 @@ with open("movies.txt") as file:
         movies_dict[movie_info[i]]=set()
         movies_dict[movie_info[i]].add(movie_info[0])
   print(movies_dict)
+  
+  
+# creting a list of all movies by looping through the movies_dict dictionary
+movies_list = []
+for movie, actors in movies_dict.items():
+    movies_list.append(movie)
+print(movies_list)
+
+# creating a sinlge list of all unique actors by looping thorugh the movies_dict 
+# dictionary
+actors_list = []
+for movie, actors in movies_dict.items():
+    actors_list.append(actors)
+actors_list = list(set([item for sublist in actors_list for item in sublist]))
+print(actors_list)
+
+#################################################################################
+################  Function 1: Get the Actors from two Movies   ##################
+#################################################################################
+
+def function1(Movie_1, Movie_2, Choice):
+  actors_1 = movies_dict[Movie_1]
+  actors_2 = movies_dict[Movie_2]
+  #Defining the function depending on the movies selected and type of overlap wanted
+
+  if Choice == "Union":
+      all_list = [actors_1, actors_2]
+      all_list = [item for sublist in all_list for item in sublist]
+      union_list = sorted(list(set(all_list)))
+      print("Actors who played in movies", '"', Movie_1,'"', "& ", '"',Movie_2,'"', "are:")
+      print(*union_list, sep = "\n")
+      
+      #Gives actors that played in either of the movies and removes repetitions
+
+  if Choice == "Intersection":
+    intersection_list = actors_1.intersection(actors_2)
+    intersection_list = sorted(list(set(intersection_list)))
+    print("Actors who played in both", '"', Movie_1,'"', "& ", '"',Movie_2,'"', "are:")
+    print(*intersection_list, sep = "\n")
+      
+    #Gives only actors who played in both of the movies chosen
+
+
+  if Choice == "Difference":
+    difference_list = (actors_1.difference(actors_2), actors_2.difference(actors_1))
+    difference_list = [item for sublist in difference_list for item in sublist]
+    difference_list = sorted(list(set(difference_list)))
+    print("Actors who played in", '"', Movie_1,'"', "but not in", '"',Movie_2,'"',"and vice versa", "are:")
+    print(*difference_list, sep = "\n")
+
+    #Gives actors who played in either of the movies chosen but not in both movies
+
+#################################################################################
+################  Function 2: Get all Coactors from an Actor   ##################
+#################################################################################
+
+# defining a function that takes an actors name as input and prints all his 
+# coactors from all the movies he has played in
+def get_coactors(actor_name):
+  # creating an empty lists for movies the actor played in and his coactors
+  movies = []
+  coactors = []
+  # looping through each movie and the corresponding actors within the movie-
+  # dictionary and adding all movies to the movies-list that the actor played in
+  for movie, actors in movies_dict.items():
+    if actor_name in actors:
+      movies.append(movie)
+  # looping through the movie-list and adding all participating actors as denoted 
+  # in the movies-dictionary to the coactors-list
+  coactors = [movies_dict[b] for b in movies]
+  # reducing the coactors-list-of-lists to a simple list  
+  coactors = [item for sublist in coactors for item in sublist]
+  # removing all the dublicates in the coactors-list
+  coactors = list(set(coactors))
+  # removing the inputed actor from the coactor list
+  coactors.remove(actor_name)
+  # sorting the coactors by name
+  coactors = sorted(coactors)
+  # printing the inputed actor name, all the movies he played in (movies-list) 
+  # and all his coactors from all his films (coactor-list)
+  print(actor_name, "played in", movies, "with the following coactors:")
+  print(*coactors, sep = "\n")
+  
+  
+#################################################################################
+################              User Menue and Main              ##################
+#################################################################################
