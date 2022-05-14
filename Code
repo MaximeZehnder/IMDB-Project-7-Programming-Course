@@ -1,0 +1,22 @@
+# creating an empty dictionary with movies as key and a list of all participating 
+# as respective values
+movies_dict = {}
+# opening the data movies.txt and looping through each line seperately 
+with open("movies.txt") as file:
+  for line in file:
+    # removing all characters from the end and start of a string
+    line = line.strip()
+    # splitting each line into the actor name and all the movies he plays in
+    movie_info = line.split(", ")
+    # looping through the movie names of in each line (the loop starts from 1 to 
+    # skip the actor name) and checking whether the movie is already a key in the 
+    # movies dictionary. If yes, the  repsective actor is added to the movie key, 
+    # if no, the movie is added as a new key to the moves.dict with the repective 
+    # actor as value
+    for i in range(1, len(movie_info)):
+      if movie_info[i] in movies_dict.keys():
+        movies_dict[movie_info[i]].add(movie_info[0])
+      else:
+        movies_dict[movie_info[i]]=set()
+        movies_dict[movie_info[i]].add(movie_info[0])
+  print(movies_dict)
